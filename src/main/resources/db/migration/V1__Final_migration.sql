@@ -5,6 +5,7 @@ CREATE TABLE booking_review
     updated_at datetime              NOT NULL,
     content    VARCHAR(255)          NOT NULL,
     rating     DOUBLE                NOT NULL,
+    booking_id BIGINT                NOT NULL,
     CONSTRAINT pk_booking_review PRIMARY KEY (id)
 );
 
@@ -13,8 +14,7 @@ CREATE TABLE bookings
     id             BIGINT AUTO_INCREMENT NOT NULL,
     created_at     datetime              NOT NULL,
     updated_at     datetime              NOT NULL,
-    review_id      BIGINT                NULL,
-    booking_status ENUM('SCHEDULE','CANCELLED','COMPLETED') NULL,
+    booking_status Enum('SCHEDULE','NOW')  NULL,
     start_time     datetime              NULL,
     end_time       datetime              NULL,
     total_distance BIGINT                NULL,
@@ -45,10 +45,13 @@ CREATE TABLE driver_review
 
 CREATE TABLE passenger
 (
-    id         BIGINT AUTO_INCREMENT NOT NULL,
-    created_at datetime              NOT NULL,
-    updated_at datetime              NOT NULL,
-    name       VARCHAR(255)          NULL,
+    id           BIGINT AUTO_INCREMENT NOT NULL,
+    created_at   datetime              NOT NULL,
+    updated_at   datetime              NOT NULL,
+    name         VARCHAR(255)          NOT NULL,
+    phone_number VARCHAR(255)          NOT NULL,
+    email        VARCHAR(255)          NOT NULL,
+    password     VARCHAR(255)          NOT NULL,
     CONSTRAINT pk_passenger PRIMARY KEY (id)
 );
 
@@ -60,6 +63,9 @@ CREATE TABLE passenger_review
     CONSTRAINT pk_passengerreview PRIMARY KEY (driver_review_id)
 );
 
+ALTER TABLE booking_review
+    ADD CONSTRAINT uc_booking_review_booking UNIQUE (booking_id);
+
 ALTER TABLE driver
     ADD CONSTRAINT uc_driver_licencenumber UNIQUE (licencenumber);
 
@@ -69,8 +75,8 @@ ALTER TABLE bookings
 ALTER TABLE bookings
     ADD CONSTRAINT FK_BOOKINGS_ON_PASSENGER FOREIGN KEY (passenger_id) REFERENCES passenger (id);
 
-ALTER TABLE bookings
-    ADD CONSTRAINT FK_BOOKINGS_ON_REVIEW FOREIGN KEY (review_id) REFERENCES booking_review (id);
+ALTER TABLE booking_review
+    ADD CONSTRAINT FK_BOOKING_REVIEW_ON_BOOKING FOREIGN KEY (booking_id) REFERENCES bookings (id);
 
 ALTER TABLE driver_review
     ADD CONSTRAINT FK_DRIVERREVIEW_ON_ID FOREIGN KEY (id) REFERENCES booking_review (id);

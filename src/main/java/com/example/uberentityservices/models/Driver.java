@@ -32,6 +32,9 @@ public class  Driver extends BaseModel{
 
     private String address;
 
+    private String aadharCard;
+
+
     @OneToMany(mappedBy = "driver",fetch = FetchType.LAZY)
     private List<Bookings> bookings;
 
