@@ -1,10 +1,9 @@
 package com.example.uberentityservices.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 
 import java.util.List;
@@ -33,6 +32,27 @@ public class  Driver extends BaseModel{
     private String address;
 
     private String aadharCard;
+
+    @OneToOne(mappedBy = "driver",cascade = CascadeType.ALL)//BIDIRECTIONAL ONE TO ONE MAPPING>>>>
+    private Car car;//not understood this portions why to add in bothdriver and car>>>>
+
+    @Enumerated(value=EnumType.STRING)
+    private DriverApprovalStatus  driverApprovalStatus;
+
+    @OneToOne //UNIDIRECTIONAL ONE TO ONE MAPPING>>>>>
+    private ExactLocations  exactLocations;
+
+    @OneToOne
+    private ExactLocations home;
+
+     private String activeCity;
+
+     @DecimalMin(value="0.01",message = "Rating should be in between 0.0 and 5.0")
+     @DecimalMax(value="5.0",message = "Rating should be in between 0.0 and 5.0")
+     private double rating;
+
+
+   private Boolean isAvailable;
 
 
     @OneToMany(mappedBy = "driver",fetch = FetchType.LAZY)

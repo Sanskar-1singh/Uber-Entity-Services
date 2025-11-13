@@ -1,0 +1,18 @@
+
+
+ALTER TABLE bookings
+    ADD CONSTRAINT FK_BOOKINGS_ON_STARTLOCATIONS FOREIGN KEY (start_locations_id) REFERENCES exact_locations (id);
+
+
+
+
+
+ALTER TABLE passenger
+    ADD CONSTRAINT FK_PASSENGER_ON_BOOKING FOREIGN KEY (booking_id) REFERENCES bookings (id);
+
+ALTER TABLE passenger
+    ADD CONSTRAINT FK_PASSENGER_ON_HOME FOREIGN KEY (home_id) REFERENCES exact_locations (id);
+
+ALTER TABLE passenger
+    ADD CONSTRAINT FK_PASSENGER_ON_LASTKNOWNLOCATION FOREIGN KEY (last_known_location_id) REFERENCES exact_locations (id);
+

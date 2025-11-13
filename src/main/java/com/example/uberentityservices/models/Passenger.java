@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -40,6 +43,20 @@ public class Passenger extends BaseModel {
 
     @Column(nullable = false)
     private String password;
+
+    @OneToOne
+    private Bookings booking;
+
+
+    @DecimalMin(value="0.01",message = "Rating should be in between 0.0 and 5.0")
+    @DecimalMax(value="5.0",message = "Rating should be in between 0.0 and 5.0")
+    private double rating;
+
+    @OneToOne
+    private ExactLocations lastKnownLocation;
+
+    @OneToOne
+    private ExactLocations home;
 
 
     @OneToMany(mappedBy = "passenger")

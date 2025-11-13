@@ -12,6 +12,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 
+
+@Table(indexes = {
+        @Index(columnList = "driver_id"),
+        @Index(columnList = "end_time")
+})
 public class Bookings extends BaseModel{
 
     @Enumerated(value=EnumType.STRING)
@@ -30,6 +35,14 @@ public class Bookings extends BaseModel{
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Passenger passenger;
+
+    @OneToOne
+    private ExactLocations  startLocations;
+
+    @OneToOne
+    private ExactLocations endLocations;
+
+
 
 
 }
